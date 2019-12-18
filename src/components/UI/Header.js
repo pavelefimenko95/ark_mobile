@@ -6,7 +6,8 @@ import theme from '../../theme';
 export default ({title, hasBackBtn}) =>
     <Header
         androidStatusBarColor={theme.variables.colors.primary}
-        style={{backgroundColor: theme.variables.colors.primary}}
+        style={{height: 100}}
+        transparent
     >
         <Left style={theme.lib.container}>
             {hasBackBtn &&
@@ -14,12 +15,16 @@ export default ({title, hasBackBtn}) =>
                     onPress={Actions.wallets}
                     transparent
                 >
-                    <Icon type="MaterialIcons" name="arrow-back" />
+                    <Icon
+                        type="MaterialIcons"
+                        name="arrow-back"
+                        style={theme.lib.textRegular}
+                    />
                 </Button>
             }
         </Left>
-        <Body style={[theme.lib.container, theme.lib.centralize]}>
-            <Title>{title}</Title>
+        <Body style={[{flex: 5}, theme.lib.centralize]}>
+            <Title style={[theme.lib.textRegular, theme.lib.textMd]}>{title.toUpperCase()}</Title>
         </Body>
         <Right style={theme.lib.container} />
     </Header>;

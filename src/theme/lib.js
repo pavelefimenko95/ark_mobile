@@ -6,7 +6,7 @@ export default StyleSheet.create({
         flex: 1
     },
     content: {
-        paddingHorizontal: 15
+        paddingHorizontal: 20
     },
     centralize: {
         justifyContent: 'center',
@@ -17,6 +17,12 @@ export default StyleSheet.create({
     },
     alignCenter: {
         alignItems: 'center'
+    },
+    directionRow: {
+        flexDirection: 'row'
+    },
+    textRegular: {
+        color: variables.colors.greyed
     },
     textSecondary: {
         color: variables.colors.secondary,
@@ -32,5 +38,11 @@ export default StyleSheet.create({
     },
     textLg: {
         fontSize: 26
+    },
+    textMd: {
+        fontSize: 20
+    },
+    textBold: {
+        fontWeight: 'bold'
     }
 });
