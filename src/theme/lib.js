@@ -5,8 +5,17 @@ export default StyleSheet.create({
     container: {
         flex: 1
     },
+    content: {
+        paddingHorizontal: 15
+    },
     centralize: {
         justifyContent: 'center',
+        alignItems: 'center'
+    },
+    alignStart: {
+        alignItems: 'flex-start'
+    },
+    alignCenter: {
         alignItems: 'center'
     },
     textSecondary: {
@@ -22,6 +31,6 @@ export default StyleSheet.create({
         fontSize: 16
     },
     textLg: {
-        fontSize: 23
+        fontSize: 26
     }
 });

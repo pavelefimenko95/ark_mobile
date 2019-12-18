@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Icon, Container, Body, Title, Content, Button } from 'native-base';
+import { Icon, Container, Content, Button } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 import theme from '../../theme/index';
 import Header from '../UI/Header';
 import Footer from '../UI/Footer';
@@ -16,7 +17,8 @@ export default class WalletsPage extends Component {
 
     onActionSheetChange = value => {
         this.setState({isActionSheetVisible: false});
-        alert(value);
+        if(value === 'IMPORT_WALLET')
+            Actions.importWallet();
     };
 
     render() {
@@ -24,11 +26,7 @@ export default class WalletsPage extends Component {
 
         return (
             <Container>
-                <Header>
-                    <Body>
-                        <Title>Wallets</Title>
-                    </Body>
-                </Header>
+                <Header title="Wallets" />
                 <Content contentContainerStyle={[theme.lib.container, theme.lib.centralize]}>
                     <NoContentLabel
                         text="No wallets"
