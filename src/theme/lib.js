@@ -18,11 +18,15 @@ export default StyleSheet.create({
     alignCenter: {
         alignItems: 'center'
     },
+    alignEnd: {
+        alignItems: 'flex-end'
+    },
     directionRow: {
         flexDirection: 'row'
     },
     textRegular: {
-        color: variables.colors.greyed
+        color: variables.colors.greyed,
+        fontSize: 16
     },
     textSecondary: {
         color: variables.colors.secondary,

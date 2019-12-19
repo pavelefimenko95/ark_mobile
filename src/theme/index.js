@@ -6,6 +6,8 @@ import Footer from './UI/Footer';
 import ImportWalletForm from './UI/ImportWalletForm';
 import ItemCard from './UI/ItemCard';
 import WalletPreview from './UI/WalletPreview';
+import WalletDetailsPage from './UI/WalletDetailsPage';
+import Transaction from './UI/Transaction';
 
 
 export default {
@@ -16,7 +18,9 @@ export default {
         ActionSheet,
         ImportWalletForm,
         ItemCard,
-        WalletPreview
+        WalletPreview,
+        WalletDetailsPage,
+        Transaction
     },
     variables
 };

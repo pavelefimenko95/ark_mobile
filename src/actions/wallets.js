@@ -18,3 +18,25 @@ export const getWallets = walletsIds => async dispatch => {
         console.log(e);
     }
 };
+
+export const setSelectedWallet = selectedWallet => ({
+    type: constants.SET_SELECTED_WALLET,
+    payload: {
+        selectedWallet
+    }
+});
+
+export const getWalletTransactions = walletId => async dispatch => {
+    try {
+        let response = await axios.get(`https://explorer.ark.io/api/wallets/${walletId}/transactions`);
+
+        dispatch({
+            type: constants.GET_WALLET_TRANSACTIONS,
+            payload: {
+                walletTransactions: response.data.data
+            }
+        });
+    } catch (e) {
+        console.log(e);
+    }
+};

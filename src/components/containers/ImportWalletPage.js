@@ -20,7 +20,7 @@ class ImportWalletPage extends Component {
     render() {
         return (
             <Container>
-                <Header title="Import wallet" hasBackBtn />
+                <Header title="Import wallet" hasBackBtn variant="secondary" />
                 <ImportWalletForm onSubmit={this.onImportWallet} />
             </Container>
         );

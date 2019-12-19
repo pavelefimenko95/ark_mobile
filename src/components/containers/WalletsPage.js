@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { View, Icon, Container, Content, Button, Text } from 'native-base';
+import { TouchableOpacity } from 'react-native';
+import { View, Icon, Container, Content, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { getWalletsIds } from '../../utils/nativeStore';
-import { getWallets } from '../../actions/wallets';
+import { getWallets, setSelectedWallet } from '../../actions/wallets';
 import theme from '../../theme/index';
 import Header from '../UI/Header';
 import Footer from '../UI/Footer';
@@ -30,17 +31,27 @@ class WalletsPage extends Component {
             Actions.importWallet();
     };
 
+    onWalletPress = wallet => {
+        this.props.actions.setSelectedWallet(wallet);
+        Actions.walletDetails();
+    };
+
     render() {
         let { isActionSheetVisible, actionSheetDefs } = this.state;
         let { wallets } = this.props;
 
         return (
             <Container>
-                <Header title="Wallets" />
+                <Header title="Wallets" variant="secondary" />
                 <Content contentContainerStyle={[theme.lib.container, theme.lib.content]}>
                     {wallets.walletsList.length ?
                         wallets.walletsList.map(wallet =>
-                            <WalletPreview key={wallet.address} wallet={wallet} />
+                            <TouchableOpacity
+                                onPress={() => this.onWalletPress(wallet)}
+                                key={wallet.address}
+                            >
+                                <WalletPreview wallet={wallet} />
+                            </TouchableOpacity>
                         )
                         :
                         <View style={[theme.lib.container, theme.lib.centralize]}>
@@ -82,7 +93,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
-        getWallets
+        getWallets,
+        setSelectedWallet
     }, dispatch)
 });
 
