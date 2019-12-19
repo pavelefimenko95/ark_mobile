@@ -2,9 +2,19 @@ import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Header, Left, Right, Body, Title, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import PropTypes from 'prop-types';
 import theme from '../../theme';
 
-export default ({title, hasBackBtn, hasOptionsBtn, onOptionsBtnPress, variant}) => {
+const propTypes = {
+    title: PropTypes.string,
+    hasBackBtn: PropTypes.bool,
+    hasOptionsBtn: PropTypes.bool,
+    onBackBtnPress: PropTypes.func,
+    onOptionsBtnPress: PropTypes.func,
+    variant: PropTypes.oneOf(['primary', 'secondary'])
+};
+
+const CustomHeader = ({title, hasBackBtn, onBackBtnPress, hasOptionsBtn, onOptionsBtnPress, variant}) => {
     let textStyle = variant === 'primary' ? theme.lib.textSecondary : theme.lib.textRegular;
 
     return (
@@ -16,7 +26,10 @@ export default ({title, hasBackBtn, hasOptionsBtn, onOptionsBtnPress, variant}) 
             <Left style={theme.lib.container}>
                 {hasBackBtn &&
                     <Button
-                        onPress={Actions.wallets}
+                        onPress={() => {
+                            onBackBtnPress && onBackBtnPress();
+                            Actions.wallets();
+                        }}
                         transparent
                     >
                         <Icon
@@ -44,3 +57,7 @@ export default ({title, hasBackBtn, hasOptionsBtn, onOptionsBtnPress, variant}) 
         </Header>
     );
 };
+
+Header.propTypes = propTypes;
+
+export default CustomHeader;

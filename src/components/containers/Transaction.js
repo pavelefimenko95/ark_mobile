@@ -1,11 +1,17 @@
 import React from 'react';
 import { View, Text, Icon } from 'native-base';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import theme from '../../theme';
+
+const propTypes = {
+    transaction: PropTypes.object.isRequired,
+    wallet: PropTypes.object.isRequired
+};
 
 const styles = theme.UI.Transaction;
 
-export default ({transaction, wallet}) => {
+const Transaction = ({transaction, wallet}) => {
     let isSender = transaction.sender === wallet.address;
     let fee = isSender ? +transaction.fee : 0;
     let amount = (+transaction.amount + fee) / Math.pow(10, 8);
@@ -13,7 +19,9 @@ export default ({transaction, wallet}) => {
     return (
         <View style={[theme.lib.directionRow, styles.wrapper]}>
             <View style={styles.destination}>
-                <Text style={styles.destinationTitle}>{isSender ? 'Sent to' : 'Received from'}</Text>
+                <Text style={styles.destinationTitle}>
+                    {isSender ? 'Sent to' : 'Received from'}
+                </Text>
                 <Text
                     style={styles.destinationAddress}
                     numberOfLines={1}
@@ -44,3 +52,7 @@ export default ({transaction, wallet}) => {
         </View>
     );
 };
+
+Transaction.propTypes = propTypes;
+
+export default Transaction;

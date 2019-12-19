@@ -40,6 +40,10 @@ export default StyleSheet.create({
         color: variables.colors.greyed,
         fontSize: 16
     },
+    textError: {
+        color: variables.colors.error,
+        fontSize: 14
+    },
     textLg: {
         fontSize: 26
     },

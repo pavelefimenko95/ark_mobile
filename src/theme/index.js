@@ -7,6 +7,7 @@ import ImportWalletForm from './UI/ImportWalletForm';
 import ItemCard from './UI/ItemCard';
 import WalletPreview from './UI/WalletPreview';
 import WalletDetailsPage from './UI/WalletDetailsPage';
+import OverlaySpinner from './UI/OverlaySpinner'
 import Transaction from './UI/Transaction';
 
 
@@ -20,7 +21,8 @@ export default {
         ItemCard,
         WalletPreview,
         WalletDetailsPage,
-        Transaction
+        Transaction,
+        OverlaySpinner
     },
     variables
 };

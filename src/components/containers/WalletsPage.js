@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, ActivityIndicator } from 'react-native';
 import { View, Icon, Container, Content, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import PropTypes from 'prop-types';
+import OverlaySpinner from '../UI/OverlaySpinner';
 import { getWalletsIds } from '../../utils/nativeStore';
-import { getWallets, setSelectedWallet } from '../../actions/wallets';
+import { getWallets, setSelectedWallet, resetWalletDetails } from '../../actions/wallets';
 import theme from '../../theme/index';
 import Header from '../UI/Header';
 import Footer from '../UI/Footer';
 import NoContentLabel from '../UI/NoContentLabel';
 import ActionSheet from '../UI/ActionSheet';
 import WalletPreview from './WalletPreview';
+
+const propTypes = {
+    actions: PropTypes.objectOf(PropTypes.func),
+    wallets: PropTypes.object
+};
 
 class WalletsPage extends Component {
     state = {
@@ -32,6 +39,7 @@ class WalletsPage extends Component {
     };
 
     onWalletPress = wallet => {
+        this.props.actions.resetWalletDetails();
         this.props.actions.setSelectedWallet(wallet);
         Actions.walletDetails();
     };
@@ -42,6 +50,7 @@ class WalletsPage extends Component {
 
         return (
             <Container>
+                {wallets.pendingState.getWallets && <OverlaySpinner />}
                 <Header title="Wallets" variant="secondary" />
                 <Content contentContainerStyle={[theme.lib.container, theme.lib.content]}>
                     {wallets.walletsList.length ?
@@ -87,6 +96,8 @@ class WalletsPage extends Component {
     }
 }
 
+WalletsPage.propTypes = propTypes;
+
 const mapStateToProps = state => ({
     wallets: state.wallets
 });
@@ -94,7 +105,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
         getWallets,
-        setSelectedWallet
+        setSelectedWallet,
+        resetWalletDetails
     }, dispatch)
 });
 

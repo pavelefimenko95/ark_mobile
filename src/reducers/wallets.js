@@ -3,7 +3,11 @@ import * as constants from '../constants/actions/wallets';
 const initialState = {
     walletsList: [],
     selectedWallet: {},
-    walletTransactions: []
+    walletTransactions: [],
+    pendingState: {
+        getWallets: false,
+        getWalletTransactions: false
+    }
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +26,28 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 walletTransactions: action.payload.walletTransactions
+            };
+        case constants.RESET_WALLET_DETAILS:
+            return {
+                ...state,
+                selectedWallet: {},
+                walletTransactions: []
+            };
+        case constants.WALLETS_REQUEST_PENDING:
+            return {
+                ...state,
+                pendingState: {
+                    ...state.pendingState,
+                    [action.payload.funcName]: true
+                }
+            };
+        case constants.WALLETS_REQUEST_FULFILLED:
+            return {
+                ...state,
+                pendingState: {
+                    ...state.pendingState,
+                    [action.payload.funcName]: false
+                }
             };
         default:
             return state;

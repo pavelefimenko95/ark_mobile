@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import { View, Container, Content, Text, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import PropTypes from 'prop-types';
 import { getWalletTransactions } from '../../actions/wallets';
 import Header from '../UI/Header';
 import ActionSheet from '../UI/ActionSheet';
 import Transaction from '../containers/Transaction';
 import theme from '../../theme';
 import { getWalletsIds, saveWalletsIds } from '../../utils/nativeStore';
+
+const propTypes = {
+    actions: PropTypes.objectOf(PropTypes.func),
+    wallets: PropTypes.object
+};
 
 const styles = theme.UI.WalletDetailsPage;
 
@@ -18,12 +24,23 @@ class WalletDetailsPage extends Component {
         isActionSheetVisible: false,
         actionSheetDefs: [
             {label: 'Delete wallet', value: 'DELETE_WALLET'}
-        ]
+        ],
+        isRefreshing: false
     };
 
     componentDidMount() {
+        this.getTransactions(true);
+    }
+
+    getTransactions(isPending) {
         let { actions, wallets } = this.props;
-        actions.getWalletTransactions(wallets.selectedWallet.publicKey);
+        actions.getWalletTransactions(wallets.selectedWallet.publicKey, isPending);
+    }
+
+    async onRefresh() {
+        this.setState({isRefreshing: true});
+        await this.getTransactions();
+        this.setState({isRefreshing: false});
     }
 
     onActionSheetChange = async value => {
@@ -38,7 +55,7 @@ class WalletDetailsPage extends Component {
     };
 
     render() {
-        let { actionSheetDefs, isActionSheetVisible } = this.state;
+        let { actionSheetDefs, isActionSheetVisible, isRefreshing } = this.state;
         let { wallets } = this.props;
 
         return (
@@ -50,7 +67,14 @@ class WalletDetailsPage extends Component {
                     onOptionsBtnPress={() => this.setState({isActionSheetVisible: true})}
                     variant="primary"
                 />
-                <Content>
+                <Content
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={this.onRefresh.bind(this)}
+                        />
+                    }
+                >
                     <View style={[theme.lib.alignCenter, styles.detailsWrapper]}>
                         <View style={[theme.lib.directionRow, theme.lib.alignCenter, styles.balanceWrapper]}>
                             <Icon
@@ -67,13 +91,21 @@ class WalletDetailsPage extends Component {
                         </Text>
                     </View>
                     <View style={theme.lib.content}>
-                        {[...wallets.walletTransactions].reverse().map(transaction =>
-                            <Transaction
-                                transaction={transaction}
-                                wallet={wallets.selectedWallet}
-                                key={transaction.id}
+                        {wallets.pendingState.getWalletTransactions ?
+                            <ActivityIndicator
+                                size="large"
+                                color={theme.variables.colors.primary}
+                                style={{marginTop: 20}}
                             />
-                        )}
+                            :
+                            [...wallets.walletTransactions].reverse().map(transaction =>
+                                <Transaction
+                                    transaction={transaction}
+                                    wallet={wallets.selectedWallet}
+                                    key={transaction.id}
+                                />
+                            )
+                        }
                     </View>
                     <ActionSheet
                         visible={isActionSheetVisible}
@@ -87,6 +119,8 @@ class WalletDetailsPage extends Component {
         );
     }
 }
+
+WalletDetailsPage.propTypes = propTypes;
 
 const mapStateToProps = state => ({
     wallets: state.wallets
