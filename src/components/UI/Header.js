@@ -1,9 +1,10 @@
 import React from 'react';
+import { TouchableWithoutFeedback } from 'react-native';
 import { Header, Left, Right, Body, Title, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import theme from '../../theme';
 
-export default ({title, hasBackBtn, variant}) => {
+export default ({title, hasBackBtn, hasOptionsBtn, onOptionsBtnPress, variant}) => {
     let textStyle = variant === 'primary' ? theme.lib.textSecondary : theme.lib.textRegular;
 
     return (
@@ -29,7 +30,17 @@ export default ({title, hasBackBtn, variant}) => {
             <Body style={[{flex: 5}, theme.lib.centralize]}>
                 <Title style={[textStyle, theme.lib.textMd]}>{title.toUpperCase()}</Title>
             </Body>
-            <Right style={theme.lib.container} />
+            <Right style={[theme.lib.container]}>
+                {hasOptionsBtn &&
+                    <TouchableWithoutFeedback onPress={onOptionsBtnPress}>
+                        <Icon
+                            type="MaterialCommunityIcons"
+                            name="dots-horizontal"
+                            style={[textStyle, theme.lib.textLg, {paddingRight: 5}]}
+                        />
+                    </TouchableWithoutFeedback>
+                }
+            </Right>
         </Header>
     );
 };

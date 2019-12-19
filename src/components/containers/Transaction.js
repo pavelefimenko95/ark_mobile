@@ -6,7 +6,6 @@ import theme from '../../theme';
 const styles = theme.UI.Transaction;
 
 export default ({transaction, wallet}) => {
-    console.log(transaction);
     let isSender = transaction.sender === wallet.address;
     let fee = isSender ? +transaction.fee : 0;
     let amount = (+transaction.amount + fee) / Math.pow(10, 8);
